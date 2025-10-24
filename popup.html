@@ -5,7 +5,7 @@
   <title>Messenger Outreach</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     * {
       margin: 0;
@@ -15,17 +15,19 @@
 
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      width: 480px;
+      width: 520px;
+      height: 600px;
       padding: 0;
       background: linear-gradient(135deg, #fdfbfb 0%, #f7f9fc 100%);
       color: #2c3e50;
       font-size: 14px;
       line-height: 1.6;
+      overflow: hidden;
     }
 
     .header {
       background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-      padding: 24px 24px 20px;
+      padding: 20px 24px 0;
       border-bottom: 1px solid #e8ecef;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
     }
@@ -42,11 +44,50 @@
       font-size: 12px;
       color: #6b7785;
       font-weight: 400;
+      margin-bottom: 16px;
+    }
+
+    .nav-tabs {
+      display: flex;
+      gap: 4px;
+      margin: 0 -24px;
+      padding: 0 24px;
+    }
+
+    .nav-tab {
+      flex: 1;
+      padding: 12px 16px;
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 500;
+      color: #6b7785;
+      transition: all 0.25s ease;
+      font-family: inherit;
+      position: relative;
+    }
+
+    .nav-tab:hover {
+      color: #374151;
+      background: rgba(59, 130, 246, 0.03);
+    }
+
+    .nav-tab.active {
+      color: #3b82f6;
+      border-bottom-color: #3b82f6;
+      background: rgba(59, 130, 246, 0.05);
+    }
+
+    .tab-icon {
+      margin-right: 6px;
+      font-size: 14px;
     }
 
     .content {
       padding: 20px 24px 24px;
-      max-height: 520px;
+      height: calc(600px - 110px);
       overflow-y: auto;
     }
 
@@ -67,14 +108,31 @@
       background: #9ca3af;
     }
 
-    .row {
-      margin-bottom: 20px;
+    .tab-view {
+      display: none;
       animation: fadeIn 0.3s ease-in;
+    }
+
+    .tab-view.active {
+      display: block;
     }
 
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(4px); }
       to { opacity: 1; transform: translateY(0); }
+    }
+
+    .section-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: #1a2332;
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .row {
+      margin-bottom: 20px;
     }
 
     label {
@@ -115,6 +173,30 @@
       outline: none;
       border-color: #3b82f6;
       box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 8px;
+      background: #ffffff;
+      font-size: 13px;
+      color: #1f2937;
+      font-family: inherit;
+      transition: all 0.25s ease;
+    }
+
+    input[type="text"]:hover {
+      border-color: #d1d5db;
+      background: #fafbfc;
+    }
+
+    input[type="text"]:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+      background: #ffffff;
     }
 
     textarea {
@@ -275,7 +357,6 @@
     }
 
     button {
-      flex: 1;
       padding: 12px 18px;
       border: none;
       border-radius: 10px;
@@ -307,52 +388,67 @@
       height: 300px;
     }
 
-    #start {
+    .btn-primary {
+      flex: 1;
       background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
       color: #ffffff;
       box-shadow: 0 2px 8px rgba(59, 130, 246, 0.25);
     }
 
-    #start:hover {
+    .btn-primary:hover {
       background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
       box-shadow: 0 4px 12px rgba(59, 130, 246, 0.35);
       transform: translateY(-1px);
     }
 
-    #start:active {
+    .btn-primary:active {
       transform: translateY(0);
     }
 
-    #stop {
+    .btn-danger {
+      flex: 1;
       background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
       color: #ffffff;
       box-shadow: 0 2px 8px rgba(239, 68, 68, 0.25);
     }
 
-    #stop:hover {
+    .btn-danger:hover {
       background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
       box-shadow: 0 4px 12px rgba(239, 68, 68, 0.35);
       transform: translateY(-1px);
     }
 
-    #stop:active {
+    .btn-danger:active {
       transform: translateY(0);
     }
 
-    #clear {
+    .btn-secondary {
+      flex: 1;
       background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
       color: #4b5563;
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
     }
 
-    #clear:hover {
+    .btn-secondary:hover {
       background: linear-gradient(135deg, #e5e7eb 0%, #d1d5db 100%);
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
       transform: translateY(-1px);
     }
 
-    #clear:active {
+    .btn-secondary:active {
       transform: translateY(0);
+    }
+
+    .btn-success {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(16, 185, 129, 0.25);
+    }
+
+    .btn-success:hover {
+      background: linear-gradient(135deg, #059669 0%, #047857 100%);
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35);
+      transform: translateY(-1px);
     }
 
     #status {
@@ -378,91 +474,303 @@
       background: linear-gradient(to right, transparent, #e5e7eb, transparent);
       margin: 20px 0;
     }
+
+    .campaign-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .campaign-item {
+      padding: 14px 16px;
+      background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+      border: 1.5px solid #e5e7eb;
+      border-radius: 10px;
+      transition: all 0.25s ease;
+      cursor: pointer;
+    }
+
+    .campaign-item:hover {
+      border-color: #d1d5db;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      transform: translateY(-1px);
+    }
+
+    .campaign-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      margin-bottom: 8px;
+    }
+
+    .campaign-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: #1a2332;
+      margin-bottom: 4px;
+    }
+
+    .campaign-date {
+      font-size: 11px;
+      color: #6b7785;
+    }
+
+    .campaign-actions {
+      display: flex;
+      gap: 6px;
+    }
+
+    .icon-btn {
+      padding: 6px 8px;
+      background: transparent;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+      font-size: 11px;
+      color: #6b7785;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .icon-btn:hover {
+      background: #f3f4f6;
+      border-color: #d1d5db;
+      color: #374151;
+    }
+
+    .icon-btn.danger:hover {
+      background: #fee2e2;
+      border-color: #fecaca;
+      color: #dc2626;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: #6b7785;
+    }
+
+    .empty-icon {
+      font-size: 48px;
+      margin-bottom: 12px;
+      opacity: 0.3;
+    }
+
+    .empty-text {
+      font-size: 14px;
+      color: #9ca3af;
+    }
+
+    .profile-container {
+      text-align: center;
+      padding: 60px 20px;
+    }
+
+    .profile-icon {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 20px;
+      background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      color: #3b82f6;
+    }
+
+    .profile-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #1a2332;
+      margin-bottom: 8px;
+    }
+
+    .profile-subtitle {
+      font-size: 13px;
+      color: #6b7785;
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      width: 400px;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+      animation: modalSlideIn 0.3s ease;
+    }
+
+    @keyframes modalSlideIn {
+      from { opacity: 0; transform: scale(0.95) translateY(-20px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .modal-header {
+      font-size: 16px;
+      font-weight: 600;
+      color: #1a2332;
+      margin-bottom: 16px;
+    }
+
+    .modal-footer {
+      display: flex;
+      gap: 8px;
+      margin-top: 20px;
+    }
   </style>
 </head>
 <body>
   <div class="header">
     <h3>Messenger Outreach</h3>
     <div class="subtitle">Automated messaging assistant</div>
+    <div class="nav-tabs">
+      <button class="nav-tab active" data-tab="home">
+        <span class="tab-icon">🏠</span>Home
+      </button>
+      <button class="nav-tab" data-tab="profile">
+        <span class="tab-icon">👤</span>Profile
+      </button>
+    </div>
   </div>
 
   <div class="content">
-    <div class="row">
-      <label>Upload CSV File</label>
-      <input id="csvfile" type="file" accept=".csv" />
-      <div class="small">Supports headers like "First", "First Name", "Profile Link", "Profile", "Profile URL"</div>
-    </div>
+    <div id="home-tab" class="tab-view active">
+      <div class="section-title">Create New Campaign</div>
 
-    <div class="row">
-      <label>Message Template</label>
-      <textarea id="template" placeholder="Write your message here...">Hey {{First}}, I saw your profile and thought you might be interested in a short idea — reply YES if you'd like to hear it.</textarea>
-      <div class="small">Use {{First}} to insert first name from CSV</div>
-    </div>
+      <div class="row">
+        <label>Upload CSV File</label>
+        <input id="csvfile" type="file" accept=".csv" />
+        <div class="small">Supports headers like "First", "First Name", "Profile Link", "Profile", "Profile URL"</div>
+      </div>
 
-    <div class="row">
-      <label>Operation Mode</label>
-      <div class="radio-group">
-        <div class="radio-option">
-          <input type="radio" name="mode" id="mode_manual" value="manual" checked>
-          <label for="mode_manual" class="radio-label">Manual Send</label>
+      <div class="row">
+        <label>Message Template</label>
+        <textarea id="template" placeholder="Write your message here...">Hey {{First}}, I saw your profile and thought you might be interested in a short idea — reply YES if you'd like to hear it.</textarea>
+        <div class="small">Use {{First}} to insert first name from CSV</div>
+      </div>
+
+      <div class="row">
+        <label>Operation Mode</label>
+        <div class="radio-group">
+          <div class="radio-option">
+            <input type="radio" name="mode" id="mode_manual" value="manual" checked>
+            <label for="mode_manual" class="radio-label">Manual Send</label>
+          </div>
+          <div class="radio-option">
+            <input type="radio" name="mode" id="mode_auto" value="auto">
+            <label for="mode_auto" class="radio-label">Auto Send</label>
+          </div>
         </div>
-        <div class="radio-option">
-          <input type="radio" name="mode" id="mode_auto" value="auto">
-          <label for="mode_auto" class="radio-label">Auto Send</label>
+      </div>
+
+      <div class="row">
+        <label>Delay Between Messages</label>
+        <div class="input-group">
+          <input id="delayMin" type="number" value="30" min="5">
+          <span>to</span>
+          <input id="delayMax" type="number" value="90" min="5">
+          <span>seconds</span>
+        </div>
+        <div class="small">Random delay applied between messages</div>
+      </div>
+
+      <div class="row">
+        <label>Batch Pause Settings</label>
+        <div class="input-group">
+          <span>Every</span>
+          <input id="groupSize" type="number" value="10" min="1">
+          <span>messages, pause for</span>
+          <input id="groupPause" type="number" value="20" min="1">
+          <span>minutes</span>
+        </div>
+      </div>
+
+      <div class="row">
+        <label>Daily Send Limit</label>
+        <div class="input-group">
+          <input id="dailyLimit" type="number" value="30" min="0">
+          <span>messages per day (0 = unlimited)</span>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div id="counts">
+        <div id="sentCount" class="count-item">
+          <span class="count-value">0</span>
+          <span class="count-label">Sent Today</span>
+        </div>
+        <div id="waitingCount" class="count-item">
+          <span class="count-value">0</span>
+          <span class="count-label">In Queue</span>
+        </div>
+      </div>
+
+      <div class="button-group">
+        <button id="start" class="btn-primary">Start Campaign</button>
+        <button id="stop" class="btn-danger">Stop</button>
+        <button id="clear" class="btn-secondary">Clear</button>
+      </div>
+
+      <div class="button-group">
+        <button id="saveCampaign" class="btn-success">💾 Save Campaign</button>
+      </div>
+
+      <div id="status"></div>
+
+      <div class="divider"></div>
+
+      <div class="section-title">Saved Campaigns</div>
+      <div id="campaignList" class="campaign-list">
+        <div class="empty-state">
+          <div class="empty-icon">📋</div>
+          <div class="empty-text">No saved campaigns yet</div>
         </div>
       </div>
     </div>
 
-    <div class="row">
-      <label>Delay Between Messages</label>
-      <div class="input-group">
-        <input id="delayMin" type="number" value="30" min="5">
-        <span>to</span>
-        <input id="delayMax" type="number" value="90" min="5">
-        <span>seconds</span>
-      </div>
-      <div class="small">Random delay applied between messages</div>
-    </div>
-
-    <div class="row">
-      <label>Batch Pause Settings</label>
-      <div class="input-group">
-        <span>Every</span>
-        <input id="groupSize" type="number" value="10" min="1">
-        <span>messages, pause for</span>
-        <input id="groupPause" type="number" value="20" min="1">
-        <span>minutes</span>
+    <div id="profile-tab" class="tab-view">
+      <div class="profile-container">
+        <div class="profile-icon">👤</div>
+        <div class="profile-title">Profile Coming Soon</div>
+        <div class="profile-subtitle">
+          User authentication and profile management features will be available in a future update.
+          Stay tuned for sign-in, profile customization, and cloud sync capabilities.
+        </div>
       </div>
     </div>
+  </div>
 
-    <div class="row">
-      <label>Daily Send Limit</label>
-      <div class="input-group">
-        <input id="dailyLimit" type="number" value="30" min="0">
-        <span>messages per day (0 = unlimited)</span>
+  <div id="saveModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">Save Campaign</div>
+      <div class="row">
+        <label>Campaign Name</label>
+        <input type="text" id="campaignName" placeholder="Enter campaign name..." />
+      </div>
+      <div class="modal-footer">
+        <button id="confirmSave" class="btn-primary">Save</button>
+        <button id="cancelSave" class="btn-secondary">Cancel</button>
       </div>
     </div>
-
-    <div class="divider"></div>
-
-    <div id="counts">
-      <div id="sentCount" class="count-item">
-        <span class="count-value">0</span>
-        <span class="count-label">Sent Today</span>
-      </div>
-      <div id="waitingCount" class="count-item">
-        <span class="count-value">0</span>
-        <span class="count-label">In Queue</span>
-      </div>
-    </div>
-
-    <div class="button-group">
-      <button id="start">Start Campaign</button>
-      <button id="stop">Stop</button>
-      <button id="clear">Clear</button>
-    </div>
-
-    <div id="status"></div>
   </div>
 
   <script src="popup.js"></script>
