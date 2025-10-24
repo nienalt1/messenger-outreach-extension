@@ -1,4 +1,4 @@
-// background.js - updated to wait for content script confirmation before closing tab
+// background.js - updated for live counter updates in popup
 let running = false;
 let stopRequested = false;
 
@@ -55,6 +55,8 @@ async function startOutreach(){
       if (cfg.mode === 'auto') {
         state.sentToday++;
         await chrome.storage.local.set({ outreachState: state });
+        // Notify popup for live counter update
+        chrome.runtime.sendMessage({ action: 'OUTREACH_PROGRESS' });
       }
       console.log('Message processed (sent):', item.profile_url);
     } else if (response && response.status === 'filled') {

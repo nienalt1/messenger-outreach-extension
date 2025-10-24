@@ -1,16 +1,13 @@
-// popup.js - parse CSV, build queue, send start/stop messages to background
+// popup.js - robust CSV loader, enhanced status/counters, live progress from background
+
 function parseCSVWithHeaders(text) {
   // Basic robust CSV parser supporting quoted values and commas inside quotes
   const rows = [];
-  const re = /(?:,|\n|^)(?:"([^"]*(?:""[^"]*)*)"|([^",\n]*))/g;
-  let header = null;
-  let r = [], m;
-  // Split into lines but keep quotes
   const lines = text.split(/\r?\n/).filter(l => l.trim() !== '');
   if (!lines.length) return [];
   // Parse header
   const headerLine = lines.shift();
-  header = parseLine(headerLine);
+  const header = parseLine(headerLine);
   // Normalize header: trim & lowercase
   const headerNorm = header.map(h => (h || '').trim().toLowerCase());
   for (const line of lines) {
@@ -59,6 +56,14 @@ function detectColumns(rowObj) {
   return { firstKey, profileKey };
 }
 
+async function updateCounts() {
+  const s = await chrome.storage.local.get(['outreachQueue','outreachState']);
+  const queue = s.outreachQueue || [];
+  const state = s.outreachState || { sentToday: 0 };
+  document.getElementById('sentCount').textContent = `Sent: ${state.sentToday}`;
+  document.getElementById('waitingCount').textContent = `Waiting: ${queue.length}`;
+}
+
 document.getElementById('start').addEventListener('click', async () => {
   const fileInput = document.getElementById('csvfile');
   if (!fileInput.files[0]) return alert('Please upload CSV first');
@@ -88,25 +93,36 @@ document.getElementById('start').addEventListener('click', async () => {
   await chrome.storage.local.set({ outreachQueue: queue, outreachConfig: { mode, delayMin, delayMax, groupSize, groupPause, dailyLimit, startedAt: Date.now() } });
   chrome.runtime.sendMessage({ action: 'START_OUTREACH' });
   setStatus(`Started queue: ${queue.length} targets. Mode: ${mode}.`);
+  await updateCounts();
 });
 
-document.getElementById('stop').addEventListener('click', () => {
+document.getElementById('stop').addEventListener('click', async () => {
   chrome.runtime.sendMessage({ action: 'STOP_OUTREACH' });
   setStatus('Stop requested.');
+  await updateCounts();
 });
 
 document.getElementById('clear').addEventListener('click', async () => {
   await chrome.storage.local.remove(['outreachQueue','outreachState']);
   setStatus('Queue cleared.');
+  await updateCounts();
 });
 
 function setStatus(text) {
   document.getElementById('status').innerText = text;
 }
 
-// show stored queue length on popup open
+// show stored queue length and counts on popup open
 (async () => {
+  await updateCounts();
   const s = await chrome.storage.local.get(['outreachQueue','outreachConfig']);
   const q = s.outreachQueue || [];
   if (q.length) setStatus(`Loaded queue: ${q.length} targets. Configured.`);
 })();
+
+// LIVE COUNTER UPDATE: Listen for progress messages from background.js
+chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
+  if (msg.action === 'OUTREACH_PROGRESS') {
+    updateCounts();
+  }
+});

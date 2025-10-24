@@ -11,6 +11,9 @@
     .small { font-size:12px; color:#666; }
     button { padding:8px 12px; margin-right:8px; }
     #status { margin-top:8px; font-size:13px; color:#333; }
+    #counts { margin-bottom:8px; }
+    #sentCount { color:green; font-weight:bold; }
+    #waitingCount { color:orange; font-weight:bold; margin-left:20px; }
   </style>
 </head>
 <body>
@@ -47,6 +50,11 @@
   <div class="row">
     <label>Daily send limit (0 = no limit)</label><br/>
     <input id="dailyLimit" type="number" value="30" min="0">
+  </div>
+
+  <div id="counts" class="row">
+    <span id="sentCount">Sent: 0</span>
+    <span id="waitingCount">Waiting: 0</span>
   </div>
 
   <div class="row">
