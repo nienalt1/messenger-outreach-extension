@@ -1,0 +1,21 @@
+{
+  "manifest_version": 3,
+  "name": "Messenger Semi-Auto Outreach",
+  "version": "1.0",
+  "description": "Load CSV, open Facebook profiles, autofill personalized message (manual send by default).",
+  "permissions": ["scripting", "storage", "tabs"],
+  "host_permissions": ["https://www.facebook.com/*"],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://www.facebook.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}

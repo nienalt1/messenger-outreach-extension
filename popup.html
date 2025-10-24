@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Messenger Outreach</title>
+  <style>
+    body { font-family: Arial, sans-serif; width:440px; padding:12px; }
+    textarea { width:100%; height:92px; }
+    input[type="number"] { width:80px; }
+    .row { margin-bottom:8px; }
+    .small { font-size:12px; color:#666; }
+    button { padding:8px 12px; margin-right:8px; }
+    #status { margin-top:8px; font-size:13px; color:#333; }
+  </style>
+</head>
+<body>
+  <h3>Messenger Semi-Auto Outreach</h3>
+
+  <div class="row">
+    <label><strong>Upload CSV</strong> (contains profile link + name)</label><br/>
+    <input id="csvfile" type="file" accept=".csv" />
+    <div class="small">Supports headers like "First", "First Name", "Profile Link", "Profile", "Profile URL"</div>
+  </div>
+
+  <div class="row">
+    <label><strong>Message template</strong> — use {{First}} to insert first name</label>
+    <textarea id="template">Hey {{First}}, I saw your profile and thought you might be interested in a short idea — reply YES if you'd like to hear it.</textarea>
+  </div>
+
+  <div class="row">
+    <label>Mode</label><br/>
+    <input type="radio" name="mode" id="mode_manual" value="manual" checked> Manual (paste & wait for you to send)<br/>
+    <input type="radio" name="mode" id="mode_auto" value="auto"> Auto-send (risky)
+  </div>
+
+  <div class="row">
+    <label>Delay between messages (seconds)</label><br/>
+    <input id="delayMin" type="number" value="30" min="5"> to <input id="delayMax" type="number" value="90" min="5">
+    <div class="small">Randomized between min and max</div>
+  </div>
+
+  <div class="row">
+    <label>Pause every N messages</label><br/>
+    <input id="groupSize" type="number" value="10" min="1"> and pause for <input id="groupPause" type="number" value="20" min="1"> minutes
+  </div>
+
+  <div class="row">
+    <label>Daily send limit (0 = no limit)</label><br/>
+    <input id="dailyLimit" type="number" value="30" min="0">
+  </div>
+
+  <div class="row">
+    <button id="start">Start</button>
+    <button id="stop">Stop</button>
+    <button id="clear">Clear Queue</button>
+  </div>
+
+  <div id="status" class="small"></div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
