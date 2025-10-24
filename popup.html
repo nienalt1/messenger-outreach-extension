@@ -3,67 +3,467 @@
 <head>
   <meta charset="utf-8" />
   <title>Messenger Outreach</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
-    body { font-family: Arial, sans-serif; width:440px; padding:12px; }
-    textarea { width:100%; height:92px; }
-    input[type="number"] { width:80px; }
-    .row { margin-bottom:8px; }
-    .small { font-size:12px; color:#666; }
-    button { padding:8px 12px; margin-right:8px; }
-    #status { margin-top:8px; font-size:13px; color:#333; }
-    #counts { margin-bottom:8px; }
-    #sentCount { color:green; font-weight:bold; }
-    #waitingCount { color:orange; font-weight:bold; margin-left:20px; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      width: 480px;
+      padding: 0;
+      background: linear-gradient(135deg, #fdfbfb 0%, #f7f9fc 100%);
+      color: #2c3e50;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+      padding: 24px 24px 20px;
+      border-bottom: 1px solid #e8ecef;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+    }
+
+    h3 {
+      font-size: 18px;
+      font-weight: 600;
+      color: #1a2332;
+      letter-spacing: -0.3px;
+      margin-bottom: 4px;
+    }
+
+    .subtitle {
+      font-size: 12px;
+      color: #6b7785;
+      font-weight: 400;
+    }
+
+    .content {
+      padding: 20px 24px 24px;
+      max-height: 520px;
+      overflow-y: auto;
+    }
+
+    .content::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .content::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .content::-webkit-scrollbar-thumb {
+      background: #d1d5db;
+      border-radius: 3px;
+    }
+
+    .content::-webkit-scrollbar-thumb:hover {
+      background: #9ca3af;
+    }
+
+    .row {
+      margin-bottom: 20px;
+      animation: fadeIn 0.3s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: #374151;
+      margin-bottom: 8px;
+      letter-spacing: -0.1px;
+    }
+
+    .small {
+      font-size: 11px;
+      color: #6b7785;
+      margin-top: 6px;
+      line-height: 1.5;
+    }
+
+    input[type="file"] {
+      width: 100%;
+      padding: 10px 12px;
+      border: 2px dashed #d1d5db;
+      border-radius: 10px;
+      background: #ffffff;
+      cursor: pointer;
+      font-size: 12px;
+      color: #4b5563;
+      transition: all 0.25s ease;
+    }
+
+    input[type="file"]:hover {
+      border-color: #60a5fa;
+      background: #fafbfc;
+      transform: translateY(-1px);
+    }
+
+    input[type="file"]:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+
+    textarea {
+      width: 100%;
+      height: 100px;
+      padding: 12px;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 10px;
+      background: #ffffff;
+      font-family: inherit;
+      font-size: 13px;
+      color: #1f2937;
+      resize: vertical;
+      transition: all 0.25s ease;
+      line-height: 1.6;
+    }
+
+    textarea:hover {
+      border-color: #d1d5db;
+      background: #fafbfc;
+    }
+
+    textarea:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+      background: #ffffff;
+    }
+
+    .radio-group {
+      display: flex;
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .radio-option {
+      flex: 1;
+      position: relative;
+    }
+
+    .radio-option input[type="radio"] {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .radio-label {
+      display: block;
+      padding: 10px 14px;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 8px;
+      background: #ffffff;
+      cursor: pointer;
+      text-align: center;
+      font-size: 12px;
+      color: #4b5563;
+      transition: all 0.25s ease;
+      font-weight: 500;
+    }
+
+    .radio-label:hover {
+      border-color: #d1d5db;
+      background: #fafbfc;
+      transform: translateY(-1px);
+    }
+
+    .radio-option input[type="radio"]:checked + .radio-label {
+      border-color: #3b82f6;
+      background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+      color: #1e40af;
+      box-shadow: 0 2px 8px rgba(59, 130, 246, 0.15);
+    }
+
+    .input-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    input[type="number"] {
+      width: 70px;
+      padding: 8px 10px;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 8px;
+      background: #ffffff;
+      font-size: 13px;
+      color: #1f2937;
+      font-family: inherit;
+      transition: all 0.25s ease;
+      text-align: center;
+      font-weight: 500;
+    }
+
+    input[type="number"]:hover {
+      border-color: #d1d5db;
+      background: #fafbfc;
+    }
+
+    input[type="number"]:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+      background: #ffffff;
+    }
+
+    .input-group span {
+      color: #6b7785;
+      font-size: 12px;
+    }
+
+    #counts {
+      display: flex;
+      gap: 12px;
+      padding: 16px;
+      background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+      border-radius: 12px;
+      border: 1px solid #e5e7eb;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+    }
+
+    .count-item {
+      flex: 1;
+      text-align: center;
+    }
+
+    .count-value {
+      display: block;
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      transition: all 0.3s ease;
+    }
+
+    .count-label {
+      display: block;
+      font-size: 11px;
+      color: #6b7785;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    #sentCount .count-value {
+      color: #10b981;
+    }
+
+    #waitingCount .count-value {
+      color: #f59e0b;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    button {
+      flex: 1;
+      padding: 12px 18px;
+      border: none;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      font-family: inherit;
+      letter-spacing: -0.1px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    button::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      transform: translate(-50%, -50%);
+      transition: width 0.5s, height 0.5s;
+    }
+
+    button:active::before {
+      width: 300px;
+      height: 300px;
+    }
+
+    #start {
+      background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(59, 130, 246, 0.25);
+    }
+
+    #start:hover {
+      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.35);
+      transform: translateY(-1px);
+    }
+
+    #start:active {
+      transform: translateY(0);
+    }
+
+    #stop {
+      background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(239, 68, 68, 0.25);
+    }
+
+    #stop:hover {
+      background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.35);
+      transform: translateY(-1px);
+    }
+
+    #stop:active {
+      transform: translateY(0);
+    }
+
+    #clear {
+      background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+      color: #4b5563;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    #clear:hover {
+      background: linear-gradient(135deg, #e5e7eb 0%, #d1d5db 100%);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+      transform: translateY(-1px);
+    }
+
+    #clear:active {
+      transform: translateY(0);
+    }
+
+    #status {
+      padding: 12px 14px;
+      background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+      border: 1px solid #bae6fd;
+      border-radius: 8px;
+      font-size: 12px;
+      color: #0c4a6e;
+      line-height: 1.5;
+      min-height: 42px;
+      display: flex;
+      align-items: center;
+      transition: all 0.3s ease;
+    }
+
+    #status:empty {
+      display: none;
+    }
+
+    .divider {
+      height: 1px;
+      background: linear-gradient(to right, transparent, #e5e7eb, transparent);
+      margin: 20px 0;
+    }
   </style>
 </head>
 <body>
-  <h3>Messenger Semi-Auto Outreach</h3>
-
-  <div class="row">
-    <label><strong>Upload CSV</strong> (contains profile link + name)</label><br/>
-    <input id="csvfile" type="file" accept=".csv" />
-    <div class="small">Supports headers like "First", "First Name", "Profile Link", "Profile", "Profile URL"</div>
+  <div class="header">
+    <h3>Messenger Outreach</h3>
+    <div class="subtitle">Automated messaging assistant</div>
   </div>
 
-  <div class="row">
-    <label><strong>Message template</strong> — use {{First}} to insert first name</label>
-    <textarea id="template">Hey {{First}}, I saw your profile and thought you might be interested in a short idea — reply YES if you'd like to hear it.</textarea>
-  </div>
+  <div class="content">
+    <div class="row">
+      <label>Upload CSV File</label>
+      <input id="csvfile" type="file" accept=".csv" />
+      <div class="small">Supports headers like "First", "First Name", "Profile Link", "Profile", "Profile URL"</div>
+    </div>
 
-  <div class="row">
-    <label>Mode</label><br/>
-    <input type="radio" name="mode" id="mode_manual" value="manual" checked> Manual (paste & wait for you to send)<br/>
-    <input type="radio" name="mode" id="mode_auto" value="auto"> Auto-send (risky)
-  </div>
+    <div class="row">
+      <label>Message Template</label>
+      <textarea id="template" placeholder="Write your message here...">Hey {{First}}, I saw your profile and thought you might be interested in a short idea — reply YES if you'd like to hear it.</textarea>
+      <div class="small">Use {{First}} to insert first name from CSV</div>
+    </div>
 
-  <div class="row">
-    <label>Delay between messages (seconds)</label><br/>
-    <input id="delayMin" type="number" value="30" min="5"> to <input id="delayMax" type="number" value="90" min="5">
-    <div class="small">Randomized between min and max</div>
-  </div>
+    <div class="row">
+      <label>Operation Mode</label>
+      <div class="radio-group">
+        <div class="radio-option">
+          <input type="radio" name="mode" id="mode_manual" value="manual" checked>
+          <label for="mode_manual" class="radio-label">Manual Send</label>
+        </div>
+        <div class="radio-option">
+          <input type="radio" name="mode" id="mode_auto" value="auto">
+          <label for="mode_auto" class="radio-label">Auto Send</label>
+        </div>
+      </div>
+    </div>
 
-  <div class="row">
-    <label>Pause every N messages</label><br/>
-    <input id="groupSize" type="number" value="10" min="1"> and pause for <input id="groupPause" type="number" value="20" min="1"> minutes
-  </div>
+    <div class="row">
+      <label>Delay Between Messages</label>
+      <div class="input-group">
+        <input id="delayMin" type="number" value="30" min="5">
+        <span>to</span>
+        <input id="delayMax" type="number" value="90" min="5">
+        <span>seconds</span>
+      </div>
+      <div class="small">Random delay applied between messages</div>
+    </div>
 
-  <div class="row">
-    <label>Daily send limit (0 = no limit)</label><br/>
-    <input id="dailyLimit" type="number" value="30" min="0">
-  </div>
+    <div class="row">
+      <label>Batch Pause Settings</label>
+      <div class="input-group">
+        <span>Every</span>
+        <input id="groupSize" type="number" value="10" min="1">
+        <span>messages, pause for</span>
+        <input id="groupPause" type="number" value="20" min="1">
+        <span>minutes</span>
+      </div>
+    </div>
 
-  <div id="counts" class="row">
-    <span id="sentCount">Sent: 0</span>
-    <span id="waitingCount">Waiting: 0</span>
-  </div>
+    <div class="row">
+      <label>Daily Send Limit</label>
+      <div class="input-group">
+        <input id="dailyLimit" type="number" value="30" min="0">
+        <span>messages per day (0 = unlimited)</span>
+      </div>
+    </div>
 
-  <div class="row">
-    <button id="start">Start</button>
-    <button id="stop">Stop</button>
-    <button id="clear">Clear Queue</button>
-  </div>
+    <div class="divider"></div>
 
-  <div id="status" class="small"></div>
+    <div id="counts">
+      <div id="sentCount" class="count-item">
+        <span class="count-value">0</span>
+        <span class="count-label">Sent Today</span>
+      </div>
+      <div id="waitingCount" class="count-item">
+        <span class="count-value">0</span>
+        <span class="count-label">In Queue</span>
+      </div>
+    </div>
+
+    <div class="button-group">
+      <button id="start">Start Campaign</button>
+      <button id="stop">Stop</button>
+      <button id="clear">Clear</button>
+    </div>
+
+    <div id="status"></div>
+  </div>
 
   <script src="popup.js"></script>
 </body>

@@ -60,8 +60,8 @@ async function updateCounts() {
   const s = await chrome.storage.local.get(['outreachQueue','outreachState']);
   const queue = s.outreachQueue || [];
   const state = s.outreachState || { sentToday: 0 };
-  document.getElementById('sentCount').textContent = `Sent: ${state.sentToday}`;
-  document.getElementById('waitingCount').textContent = `Waiting: ${queue.length}`;
+  document.querySelector('#sentCount .count-value').textContent = state.sentToday;
+  document.querySelector('#waitingCount .count-value').textContent = queue.length;
 }
 
 document.getElementById('start').addEventListener('click', async () => {
