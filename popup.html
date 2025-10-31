@@ -635,6 +635,130 @@
       gap: 8px;
       margin-top: 20px;
     }
+
+    .screen {
+      display: none;
+    }
+
+    .screen.active {
+      display: block;
+      animation: fadeIn 0.3s ease-in;
+    }
+
+    .welcome-screen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    .welcome-icon {
+      font-size: 64px;
+      margin-bottom: 24px;
+      opacity: 0.9;
+    }
+
+    .welcome-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: #1a2332;
+      margin-bottom: 12px;
+    }
+
+    .welcome-subtitle {
+      font-size: 14px;
+      color: #6b7785;
+      margin-bottom: 32px;
+      line-height: 1.6;
+      max-width: 300px;
+    }
+
+    .welcome-stats {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 32px;
+      width: 100%;
+      justify-content: center;
+    }
+
+    .stat-card {
+      flex: 0 1 120px;
+      padding: 16px;
+      background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+    }
+
+    .stat-value {
+      font-size: 20px;
+      font-weight: 700;
+      color: #3b82f6;
+      margin-bottom: 4px;
+    }
+
+    .stat-label {
+      font-size: 11px;
+      color: #6b7785;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .btn-large {
+      padding: 14px 32px;
+      font-size: 14px;
+      font-weight: 600;
+      width: 100%;
+      max-width: 240px;
+    }
+
+    .back-button {
+      position: absolute;
+      top: 20px;
+      left: 24px;
+      padding: 8px 12px;
+      background: transparent;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+      font-size: 12px;
+      color: #6b7785;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: inherit;
+      font-weight: 500;
+    }
+
+    .back-button:hover {
+      background: #f3f4f6;
+      border-color: #d1d5db;
+      color: #374151;
+    }
+
+    .creation-screen {
+      position: relative;
+    }
+
+    .creation-header {
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .creation-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #1a2332;
+      margin-bottom: 4px;
+    }
+
+    .creation-subtitle {
+      font-size: 12px;
+      color: #6b7785;
+    }
   </style>
 </head>
 <body>
@@ -653,96 +777,126 @@
 
   <div class="content">
     <div id="home-tab" class="tab-view active">
-      <div class="section-title">Create New Campaign</div>
-
-      <div class="row">
-        <label>Upload CSV File</label>
-        <input id="csvfile" type="file" accept=".csv" />
-        <div class="small">Supports headers like "First", "First Name", "Profile Link", "Profile", "Profile URL"</div>
-      </div>
-
-      <div class="row">
-        <label>Message Template</label>
-        <textarea id="template" placeholder="Write your message here...">Hey {{First}}, I saw your profile and thought you might be interested in a short idea — reply YES if you'd like to hear it.</textarea>
-        <div class="small">Use {{First}} to insert first name from CSV</div>
-      </div>
-
-      <div class="row">
-        <label>Operation Mode</label>
-        <div class="radio-group">
-          <div class="radio-option">
-            <input type="radio" name="mode" id="mode_manual" value="manual" checked>
-            <label for="mode_manual" class="radio-label">Manual Send</label>
+      <div id="welcome-screen" class="screen active">
+        <div class="welcome-screen">
+          <div class="welcome-icon">🚀</div>
+          <div class="welcome-title">Welcome</div>
+          <div class="welcome-subtitle">
+            Create and manage your outreach campaigns all in one place
           </div>
-          <div class="radio-option">
-            <input type="radio" name="mode" id="mode_auto" value="auto">
-            <label for="mode_auto" class="radio-label">Auto Send</label>
+
+          <div class="welcome-stats">
+            <div class="stat-card">
+              <div class="stat-value" id="welcome-sent">0</div>
+              <div class="stat-label">Sent Today</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value" id="welcome-queue">0</div>
+              <div class="stat-label">In Queue</div>
+            </div>
+          </div>
+
+          <button id="createCampaignBtn" class="btn-primary btn-large">Create New Campaign</button>
+        </div>
+      </div>
+
+      <div id="creation-screen" class="screen creation-screen">
+        <button id="backBtn" class="back-button">← Back</button>
+
+        <div class="creation-header">
+          <div class="creation-title">Create Campaign</div>
+          <div class="creation-subtitle">Set up your messaging parameters</div>
+        </div>
+
+        <div class="row">
+          <label>Upload CSV File</label>
+          <input id="csvfile" type="file" accept=".csv" />
+          <div class="small">Supports headers like "First", "First Name", "Profile Link", "Profile", "Profile URL"</div>
+        </div>
+
+        <div class="row">
+          <label>Message Template</label>
+          <textarea id="template" placeholder="Write your message here...">Hey {{First}}, I saw your profile and thought you might be interested in a short idea — reply YES if you'd like to hear it.</textarea>
+          <div class="small">Use {{First}} to insert first name from CSV</div>
+        </div>
+
+        <div class="row">
+          <label>Operation Mode</label>
+          <div class="radio-group">
+            <div class="radio-option">
+              <input type="radio" name="mode" id="mode_manual" value="manual" checked>
+              <label for="mode_manual" class="radio-label">Manual Send</label>
+            </div>
+            <div class="radio-option">
+              <input type="radio" name="mode" id="mode_auto" value="auto">
+              <label for="mode_auto" class="radio-label">Auto Send</label>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="row">
-        <label>Delay Between Messages</label>
-        <div class="input-group">
-          <input id="delayMin" type="number" value="30" min="5">
-          <span>to</span>
-          <input id="delayMax" type="number" value="90" min="5">
-          <span>seconds</span>
+        <div class="row">
+          <label>Delay Between Messages</label>
+          <div class="input-group">
+            <input id="delayMin" type="number" value="30" min="5">
+            <span>to</span>
+            <input id="delayMax" type="number" value="90" min="5">
+            <span>seconds</span>
+          </div>
+          <div class="small">Random delay applied between messages</div>
         </div>
-        <div class="small">Random delay applied between messages</div>
-      </div>
 
-      <div class="row">
-        <label>Batch Pause Settings</label>
-        <div class="input-group">
-          <span>Every</span>
-          <input id="groupSize" type="number" value="10" min="1">
-          <span>messages, pause for</span>
-          <input id="groupPause" type="number" value="20" min="1">
-          <span>minutes</span>
+        <div class="row">
+          <label>Batch Pause Settings</label>
+          <div class="input-group">
+            <span>Every</span>
+            <input id="groupSize" type="number" value="10" min="1">
+            <span>messages, pause for</span>
+            <input id="groupPause" type="number" value="20" min="1">
+            <span>minutes</span>
+          </div>
         </div>
-      </div>
 
-      <div class="row">
-        <label>Daily Send Limit</label>
-        <div class="input-group">
-          <input id="dailyLimit" type="number" value="30" min="0">
-          <span>messages per day (0 = unlimited)</span>
+        <div class="row">
+          <label>Daily Send Limit</label>
+          <div class="input-group">
+            <input id="dailyLimit" type="number" value="30" min="0">
+            <span>messages per day (0 = unlimited)</span>
+          </div>
         </div>
-      </div>
 
-      <div class="divider"></div>
+        <div class="divider"></div>
 
-      <div id="counts">
-        <div id="sentCount" class="count-item">
-          <span class="count-value">0</span>
-          <span class="count-label">Sent Today</span>
+        <div id="counts">
+          <div id="sentCount" class="count-item">
+            <span class="count-value">0</span>
+            <span class="count-label">Sent Today</span>
+          </div>
+          <div id="waitingCount" class="count-item">
+            <span class="count-value">0</span>
+            <span class="count-label">In Queue</span>
+          </div>
         </div>
-        <div id="waitingCount" class="count-item">
-          <span class="count-value">0</span>
-          <span class="count-label">In Queue</span>
+
+        <div class="button-group">
+          <button id="start" class="btn-primary">Start Campaign</button>
+          <button id="stop" class="btn-danger">Stop</button>
+          <button id="clear" class="btn-secondary">Clear</button>
         </div>
-      </div>
 
-      <div class="button-group">
-        <button id="start" class="btn-primary">Start Campaign</button>
-        <button id="stop" class="btn-danger">Stop</button>
-        <button id="clear" class="btn-secondary">Clear</button>
-      </div>
+        <div class="button-group">
+          <button id="saveCampaign" class="btn-success">💾 Save Campaign</button>
+        </div>
 
-      <div class="button-group">
-        <button id="saveCampaign" class="btn-success">💾 Save Campaign</button>
-      </div>
+        <div id="status"></div>
 
-      <div id="status"></div>
+        <div class="divider"></div>
 
-      <div class="divider"></div>
-
-      <div class="section-title">Saved Campaigns</div>
-      <div id="campaignList" class="campaign-list">
-        <div class="empty-state">
-          <div class="empty-icon">📋</div>
-          <div class="empty-text">No saved campaigns yet</div>
+        <div class="section-title">Saved Campaigns</div>
+        <div id="campaignList" class="campaign-list">
+          <div class="empty-state">
+            <div class="empty-icon">📋</div>
+            <div class="empty-text">No saved campaigns yet</div>
+          </div>
         </div>
       </div>
     </div>

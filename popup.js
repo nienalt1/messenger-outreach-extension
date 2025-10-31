@@ -55,6 +55,7 @@ async function updateCounts() {
   const state = s.outreachState || { sentToday: 0 };
   document.querySelector('#sentCount .count-value').textContent = state.sentToday;
   document.querySelector('#waitingCount .count-value').textContent = queue.length;
+  updateWelcomeStats();
 }
 
 function setStatus(text) {
@@ -225,6 +226,24 @@ function escapeHtml(text) {
   return div.innerHTML;
 }
 
+function showScreen(screenId) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(screenId).classList.add('active');
+}
+
+function updateWelcomeStats() {
+  document.getElementById('welcome-sent').textContent = document.querySelector('#sentCount .count-value').textContent;
+  document.getElementById('welcome-queue').textContent = document.querySelector('#waitingCount .count-value').textContent;
+}
+
+document.getElementById('createCampaignBtn').addEventListener('click', () => {
+  showScreen('creation-screen');
+});
+
+document.getElementById('backBtn').addEventListener('click', () => {
+  showScreen('welcome-screen');
+});
+
 document.querySelectorAll('.nav-tab').forEach(tab => {
   tab.addEventListener('click', () => {
     const targetTab = tab.dataset.tab;
@@ -234,6 +253,10 @@ document.querySelectorAll('.nav-tab').forEach(tab => {
 
     document.querySelectorAll('.tab-view').forEach(v => v.classList.remove('active'));
     document.getElementById(`${targetTab}-tab`).classList.add('active');
+
+    if (targetTab === 'home') {
+      showScreen('welcome-screen');
+    }
   });
 });
 
